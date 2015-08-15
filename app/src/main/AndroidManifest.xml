@@ -20,9 +20,13 @@
         </activity>
         <!-- set parentActivityName so that a back arrow is shown in DetialActivity and will return to parent on click -->
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".DetailActivity"
-            android:label="@string/title_activity_detail" >
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
