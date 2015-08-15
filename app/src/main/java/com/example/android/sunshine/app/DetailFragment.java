@@ -73,6 +73,9 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Important: must set this to true, otherwise the inflated menu will not show !!!!!
+        setHasOptionsMenu(true);
+
         // important: set attachToRoot to false
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         TextView textView = (TextView)rootView.findViewById(R.id.detail_textView);

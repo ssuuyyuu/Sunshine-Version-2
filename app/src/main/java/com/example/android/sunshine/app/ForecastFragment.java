@@ -63,7 +63,8 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // must set this to true, otherwise the inflated menu will not show
+
+        // Important: must set this to true, otherwise the inflated menu will not show !!!!!
         setHasOptionsMenu(true);
     }
 
