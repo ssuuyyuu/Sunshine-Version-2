@@ -37,6 +37,10 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
+
+        // Binds a preference's summaries to their values.
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_location)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_temperature_units)));
     }
 
     /**
