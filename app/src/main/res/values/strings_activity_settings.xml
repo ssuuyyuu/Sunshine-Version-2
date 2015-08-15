@@ -17,13 +17,15 @@
 
     <string name="pref_key_temperature_units">units</string>
     <string name="pref_title_temperature_units">Temperature Unites</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
     <string-array name="pref_titles_temperature_units">
         <item>Metric</item>
         <item>Imperial</item>
     </string-array>
     <string-array name="pref_values_temperature_units">
-        <item>0</item>
-        <item>1</item>
+        <item>metric</item>
+        <item>imperial</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->

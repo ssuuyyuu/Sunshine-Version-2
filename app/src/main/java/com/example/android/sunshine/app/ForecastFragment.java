@@ -3,9 +3,11 @@ package com.example.android.sunshine.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -258,6 +261,13 @@ public class ForecastFragment extends Fragment {
         private String[] parseJson(String jsonStr, int numDays) throws JSONException {
             String[] result = new String[numDays];
 
+            // get chosen units from preference
+            SharedPreferences sharedPrefs =
+                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitType = sharedPrefs.getString(
+                    getString(R.string.pref_key_temperature_units),
+                    getString(R.string.pref_units_metric));
+
             JSONObject object = new JSONObject(jsonStr);
             JSONArray forecastArray = object.getJSONArray("list");
 
@@ -269,12 +279,32 @@ public class ForecastFragment extends Fragment {
                 String main = weather.getString("main");
 
                 JSONObject temp = (JSONObject)forecast.getJSONObject("temp");
-                String min = temp.getString("min");
-                String max = temp.getString("max");
-                result[i] = main + " " + min + " - " + max;
+                Double min = temp.getDouble("min");
+                Double max = temp.getDouble("max");
+                result[i] = main + " " +formatHighLows(max, min, unitType);
             }
 
             return result;
+        }
+
+        /**
+         * Prepare the weather high/lows for presentation.
+         */
+        private String formatHighLows(double high, double low, String unitType) {
+
+            if (unitType.equals(getString(R.string.pref_units_imperial))) {
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            } else if (!unitType.equals(getString(R.string.pref_units_metric))) {
+                Log.d(LOG_TAG, "Unit type not found: " + unitType);
+            }
+
+            // For presentation, assume the user doesn't care about tenths of a degree.
+            long roundedHigh = Math.round(high);
+            long roundedLow = Math.round(low);
+
+            String highLowStr = roundedHigh + "/" + roundedLow;
+            return highLowStr;
         }
     }
 
