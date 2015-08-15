@@ -16,12 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +30,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -161,7 +157,11 @@ public class ForecastFragment extends Fragment {
     private void fetchWeather() {
 
         FetchWeatherTask task = new FetchWeatherTask();
-        task.execute("75001");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPreferences.getString(getString(R.string.pref_key_location), getString(R.string.pref_default_value_location));
+
+        task.execute(location);
     }
 
     private class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
@@ -265,8 +265,8 @@ public class ForecastFragment extends Fragment {
             SharedPreferences sharedPrefs =
                     PreferenceManager.getDefaultSharedPreferences(getActivity());
             String unitType = sharedPrefs.getString(
-                    getString(R.string.pref_key_temperature_units),
-                    getString(R.string.pref_units_metric));
+                    getString(R.string.pref_key_units),
+                    getString(R.string.pref_metric_units));
 
             JSONObject object = new JSONObject(jsonStr);
             JSONArray forecastArray = object.getJSONArray("list");
@@ -292,10 +292,10 @@ public class ForecastFragment extends Fragment {
          */
         private String formatHighLows(double high, double low, String unitType) {
 
-            if (unitType.equals(getString(R.string.pref_units_imperial))) {
+            if (unitType.equals(getString(R.string.pref_imperial_units))) {
                 high = (high * 1.8) + 32;
                 low = (low * 1.8) + 32;
-            } else if (!unitType.equals(getString(R.string.pref_units_metric))) {
+            } else if (!unitType.equals(getString(R.string.pref_metric_units))) {
                 Log.d(LOG_TAG, "Unit type not found: " + unitType);
             }
 
