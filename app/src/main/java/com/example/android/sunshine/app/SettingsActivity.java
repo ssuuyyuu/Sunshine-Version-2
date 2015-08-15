@@ -33,6 +33,12 @@ import java.util.List;
  */
 public class SettingsActivity extends PreferenceActivity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.pref_general);
+    }
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
